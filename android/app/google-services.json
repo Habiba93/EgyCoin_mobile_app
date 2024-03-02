@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "580468710861",
+    "project_id": "egycoin-app",
+    "storage_bucket": "egycoin-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580468710861:android:bf0d426da7dd7740cbb884",
+        "android_client_info": {
+          "package_name": "com.example.egycoin_mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBp8Vmq_enMyXeOpk-RXQ7F3LEfUWoahU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
