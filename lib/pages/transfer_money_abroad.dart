@@ -92,11 +92,11 @@ class _TransferMoneyAbroadScreenState extends State<TransferMoneyAbroadScreen> {
                   icon: Icons.account_balance,
                   controller: bankNameController,
                 ),
-                RoundedInputField(
-                  hintText: "Bank Region",
-                  icon: Icons.location_city,
-                  controller: bankRegionController,
-                ),
+                // RoundedInputField(
+                //   hintText: "Bank Region",
+                //   icon: Icons.location_city,
+                //   controller: bankRegionController,
+                // ),
                 SizedBox(height: size.height * 0.05),
                 RoundedButton(
                   text: "Send Money",
