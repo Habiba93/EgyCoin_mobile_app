@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   MyButton(
                     iconImagePath: 'lib/icons/send-money.png',
-                    buttonText: 'Send',
+                    buttonText: 'Transfer',
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -165,16 +165,16 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  MyButton(
-                    iconImagePath: 'lib/icons/bill.png',
-                    buttonText: 'Bills',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => BillsPaymentsPage()),
-                      );
-                    },
-                  ),
+                  // MyButton(
+                  //   iconImagePath: 'lib/icons/bill.png',
+                  //   buttonText: 'Bills',
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => BillsPaymentsPage()),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),
