@@ -1,3 +1,4 @@
+import 'package:egycoin_mobile_app/pages/pin_code_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
@@ -102,24 +103,36 @@ class SettingsPage extends StatelessWidget {
             ),
             Divider(),
             ListTile(
+              leading: Icon(Icons.lock),
+              title: Text('Pin code'),
+              onTap: () {
+                // Navigate to the privacy settings screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PinCodeScreen()),
+                );
+              },
+            ),
+            Divider(),
+            ListTile(
               leading: Icon(Icons.notifications),
               title: Text('Notifications'),
               onTap: () {
                 // Navigate to the notification settings screen
               },
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.language),
-              title: Text('Language'),
-              onTap: () {
-                // Navigate to the language settings screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LanguageScreen()),
-                );
-              },
-            ),
+            // Divider(),
+            // ListTile(
+            //   leading: Icon(Icons.language),
+            //   title: Text('Language'),
+            //   onTap: () {
+            //     // Navigate to the language settings screen
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => LanguageScreen()),
+            //     );
+            //   },
+            // ),
             Divider(),
             ListTile(
               leading: Icon(Icons.logout),
