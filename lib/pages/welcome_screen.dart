@@ -1,4 +1,4 @@
-import 'package:egycoin_mobile_app/pages/login_with_phoneno.dart';
+import 'package:egycoin_mobile_app/pages/phone_page.dart';
 import 'package:flutter/material.dart';
 import 'package:egycoin_mobile_app/pages/signup_page.dart';
 import 'package:egycoin_mobile_app/pages/login_page.dart';
@@ -91,6 +91,30 @@ class WelcomePage extends StatelessWidget {
                   'Sign Up',
                   style: TextStyle(
                     fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[700],
+                  padding: EdgeInsets.symmetric(horizontal: 64.0, vertical: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PhonePage()),
+                  );
+                },
+                child: Text(
+                  'Continue with phone number',
+                  style: TextStyle(
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
