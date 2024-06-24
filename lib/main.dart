@@ -41,3 +41,15 @@ class MyApp extends StatelessWidget{
     );
   }
 }
+
+const _chainId = "11155111";
+final _sepoliaChain = W3MChainInfo(
+  chainName: 'EGYPT NETWORK',
+  namespace: 'eip155:$_chainId',
+  chainId: _chainId,
+  tokenName: 'EGYCOIN',
+  rpcUrl: 'https://rpc.sepolia.org/',
+  blockExplorer: W3MBlockExplorer(
+    name: 'EGYPT',
+    url: 'https://sepolia.etherscan.io/',
+  ),);
