@@ -19,11 +19,13 @@ import 'package:egycoin_mobile_app/pages/signup_page.dart';
 import 'package:egycoin_mobile_app/pages/welcome_screen.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web3modal_flutter/models/w3m_chain_info.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget{
   const MyApp({Key? key}) : super(key:key);
 
