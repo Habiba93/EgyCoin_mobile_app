@@ -31,16 +31,17 @@ class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
+    return GlobalLoaderOverlay(
+    child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: WelcomePage(),
+    ),
     );
   }
-}
 
 const _chainId = "11155111";
 final _sepoliaChain = W3MChainInfo(
