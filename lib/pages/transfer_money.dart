@@ -11,39 +11,80 @@ class TransferMoneyScreen extends StatefulWidget {
 }
 
 class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
-  final receiver_phonenoController = TextEditingController();
+  final receiverPhonenoController = TextEditingController();
   final amountController = TextEditingController();
+  double currentBalance = 0.0;
 
-  Future<void> transferMoney() async {
-    // Check if the user is logged in
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUserBalance();
+  }
+
+  Future<void> _getCurrentUserBalance() async {
     final currentUserUID = FirebaseAuth.instance.currentUser?.uid;
     if (currentUserUID == null) {
-      // If the user is not logged in, prompt them to log in or navigate to the login screen
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please log in to transfer money')),
       );
       return;
     }
 
-    // Get the receiver's phone number and amount from the text fields
-    String receiver_phoneno = receiver_phonenoController.text.trim();
-    double amount = double.tryParse(amountController.text.trim()) ?? 0.0;
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(currentUserUID).get();
+    if (userDoc.exists) {
+      // Retrieve balance as a string
+      String balanceString = userDoc.data()?['balance'] ?? '0.0';
+      // Convert string to double
+      double balance = double.tryParse(balanceString) ?? 0.0;
+      setState(() {
+        currentBalance = balance;
+      });
+    }
+  }
 
-    // Check if the receiver's phone number and amount are valid
-    if (receiver_phoneno.isEmpty || amount <= 0) {
-      // Handle invalid input
+  Future<void> transferMoney() async {
+    final currentUserUID = FirebaseAuth.instance.currentUser?.uid;
+    if (currentUserUID == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please log in to transfer money')),
+      );
       return;
     }
 
-    // Save the transfer details to Firestore
+    String receiverPhoneno = receiverPhonenoController.text.trim();
+    double amount = double.tryParse(amountController.text.trim()) ?? 0.0;
+
+    if (receiverPhoneno.isEmpty || amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid phone number and amount')),
+      );
+      return;
+    }
+
+    if (currentBalance < amount) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Insufficient balance')),
+      );
+      return;
+    }
+
     await FirebaseFirestore.instance.collection('transferMoney').add({
       'sender_id': currentUserUID,
-      'receiver_phone_number': receiver_phoneno,
+      'receiver_phone_number': receiverPhoneno,
       'amount': amount,
       'timestamp': FieldValue.serverTimestamp(),
     });
 
-    // Optionally, you can navigate to a success screen or show a message to the user
+    // Update the current user's balance (assuming 'balance' is stored as a string)
+    String newBalanceString = (currentBalance - amount).toString();
+    await FirebaseFirestore.instance.collection('users').doc(currentUserUID).update({
+      'balance': newBalanceString,
+    });
+
+    setState(() {
+      currentBalance -= amount;
+    });
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TransferSuccessScreen()),
@@ -65,6 +106,7 @@ class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
             );
           },
         ),
+        title: Text('Transfer Money'),
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -83,8 +125,8 @@ class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
                 key: Key("Receiver's Phone number"),
                 hintText: "Receiver's Phone number",
                 icon: Icons.phone,
-                controller: receiver_phonenoController,
-                keyboardType: TextInputType.text,
+                controller: receiverPhonenoController,
+                keyboardType: TextInputType.phone,
               ),
               RoundedInputField(
                 key: Key("Amount"),
@@ -95,6 +137,13 @@ class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
               ),
               SizedBox(
                 height: size.height * 0.05,
+              ),
+              Text(
+                'Current Balance: \$${currentBalance.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: size.height * 0.02,
               ),
               RoundedButton(
                 key: Key("Send Money"),
@@ -120,7 +169,7 @@ class RoundedInputField extends StatelessWidget {
     required this.hintText,
     this.icon = Icons.person,
     required this.controller,
-    this.keyboardType = TextInputType.text, // Default keyboard type
+    this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
   @override
