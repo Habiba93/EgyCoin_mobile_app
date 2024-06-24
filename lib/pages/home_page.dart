@@ -1,14 +1,20 @@
 import 'package:egycoin_mobile_app/pages/bills.dart';
+import 'package:egycoin_mobile_app/pages/connectWallet.dart';
+import 'package:egycoin_mobile_app/pages/news_page.dart';
+import 'package:egycoin_mobile_app/pages/transfer_history.dart';
 import 'package:flutter/material.dart';
 import 'package:egycoin_mobile_app/pages/settings.dart';
 import 'package:egycoin_mobile_app/pages/account_screen.dart';
-import 'package:egycoin_mobile_app/pages/pay_bill.dart';
+//import 'package:egycoin_mobile_app/pages/pay_bill.dart';
 import 'package:egycoin_mobile_app/pages/transfer_money.dart';
 import 'package:egycoin_mobile_app/pages/transfer_money_abroad.dart';
 import 'package:egycoin_mobile_app/util/my_button.dart';
 import 'package:egycoin_mobile_app/util/my_card.dart';
 import 'package:egycoin_mobile_app/util/my_list_tile.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:web3modal_flutter/pages/connect_wallet_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +26,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _controller = PageController();
 
+
+  late final LocalAuthentication auth;
+  bool _supportState =false;
+
+  @override
+  void initState(){
+    super.initState();
+    auth=LocalAuthentication();
+    auth.isDeviceSupported().then(
+      (bool isSupported) => setState(() {
+        _supportState=isSupported;
+      }),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +62,12 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ConnectWalletPage()),
+                  );
+                },
                 icon: Icon(
                   Icons.home,
                   size: 32,
@@ -151,7 +176,8 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TransferMoneyScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => TransferMoneyScreen()),
                       );
                     },
                   ),
@@ -161,20 +187,21 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TransferMoneyAbroadScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => TransferMoneyAbroadScreen()),
                       );
                     },
                   ),
-                  // MyButton(
-                  //   iconImagePath: 'lib/icons/bill.png',
-                  //   buttonText: 'Bills',
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => BillsPaymentsPage()),
-                  //     );
-                  //   },
-                  // ),
+                  MyButton(
+                    iconImagePath: 'lib/icons/wallet.png',
+                    buttonText: 'CBDC',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => wallet()),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -185,13 +212,28 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   MyListTile(
                     iconImagePath: 'lib/icons/statistics.png',
-                    titleSubtitle: 'Statistics',
-                    titleTitle: 'Payments and Income',
+                    titleSubtitle: 'News',
+                    titleTitle: 'CBDC recent news',
+                    onTap: () {
+                      // Navigate to a page displaying recent CBDC news
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NewsPage()),
+                      );
+                    },
                   ),
                   MyListTile(
                     iconImagePath: 'lib/icons/transaction.png',
                     titleSubtitle: 'Transactions',
                     titleTitle: 'Transaction History',
+                    onTap: () {
+                      // Navigate to a page displaying transaction history
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TransactionHistoryScreen()),
+                      );
+                    },
                   ),
                 ],
               ),
